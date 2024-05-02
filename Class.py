@@ -38,11 +38,9 @@ class Polynom:
             return "0"
         return " + ".join(terms)
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         if isinstance(other, Polynom):
             return self.coefficients == other.coefficients
-        elif isinstance(other, float):
-            return len(self.coefficients) == 1 and self.coefficients[0] == other
         else:
             False
 
@@ -56,12 +54,12 @@ class Polynom:
                 if i < len(other.coefficients):
                     result[i] += other.coefficients[i]
             return Polynom(result)
-        elif isinstance(other, (int, float)):
+        elif isinstance(other, int):
             result = self.coefficients[:]
             result[0] += other
             return Polynom(result)
         else:
-            raise ValueError("Unsupported operand type(s) for +")
+            raise ValueError("Не поддерживает сложение")
 
     def __radd__(self, other):
         return self.__add__(other)
@@ -84,12 +82,11 @@ class Polynom:
     def der(self, d=1):
         derived_coefficients = []
         for power, coef in enumerate(self.coefficients):
-            if power >= d:
-                term = coef
-                for _ in range(d):
-                    term *= power
-                    power -= 1
-                derived_coefficients.append(term)
+            term = coef
+            for _ in range(d):
+                term *= power
+                power -= 1
+            derived_coefficients.append(term)
         return Polynom(derived_coefficients)
 
     def degree(self):
@@ -102,10 +99,10 @@ class Polynom:
                 for j, other_coef in enumerate(other.coefficients):
                     result[i + j] += coef * other_coef
             return Polynom(result)
-        elif isinstance(other, (int, float)):
+        elif isinstance(other, int):
             return Polynom([coef * other for coef in self.coefficients])
         else:
-            raise ValueError("Unsupported operand type(s) for *")
+            raise ValueError("Не поддерживает умножение")
 
     def __rmul__(self, other):
         return self.__mul__(other)
@@ -116,11 +113,3 @@ class Polynom:
     def __next__(self):
         return next(iter(enumerate(self.coefficients)))
 
-    def __int__(self):
-        return int(self.coefficients[0])  # Приводим свободный член к целому типу
-
-    def __float__(self):
-        return float(self.coefficients[0])  # Приводим свободный член к вещественному типу
-
-    def __complex__(self):
-        return complex(self.coefficients[0])
