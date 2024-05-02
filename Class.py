@@ -2,20 +2,20 @@ class Polynom:
     def __init__(self, *coefficients):
         if len(coefficients) == 1:
             if isinstance(coefficients[0], dict):
-                self.coefficients = [0] * (max(coefficients[0].keys()) + 1)
+                self.coefficients = [0] * (max(coefficients[0].keys()) + 1) #прибавля
                 for power, coef in coefficients[0].items():
                     self.coefficients[power] = coef
             elif isinstance(coefficients[0], Polynom):
                 self.coefficients = coefficients[0].coefficients[:]
             else:
-                self.coefficients = coefficients[0]
+                self.coefficients = coefficients[0] #Значит список
         else:
-            self.coefficients = list(coefficients)
+            self.coefficients = list(coefficients)#считаем что аргументы являются списком
 
-    def __repr__(self):
-        return f"Polynom {self.coefficients}"
+    def __repr__(self) -> str:
+        return f"Polynom {self.coefficients[::-1]}"
 
-    def __str__(self):
+    def __str__(self) ->str:
         terms = []
         for power, coef in reversed(list(enumerate(self.coefficients))):
             if coef != 0:
@@ -92,24 +92,35 @@ class Polynom:
                 derived_coefficients.append(term)
         return Polynom(derived_coefficients)
 
+    def degree(self):
+        return len(self.coefficients) - 1
 
-poly1 = Polynom([1, 2, 3])
-poly2 = Polynom({0: -3, 2: 1, 5: 4})
-poly3 = Polynom(poly2)
-poly4 = Polynom(0, 2, 0, 5)
-poly5 = Polynom(1, 2, 3, 8, 9, 10, 5, 11, 0)
+    def __mul__(self, other):
+        if isinstance(other, Polynom):
+            result = [0] * (len(self.coefficients) + len(other.coefficients) - 1)
+            for i, coef in enumerate(self.coefficients):
+                for j, other_coef in enumerate(other.coefficients):
+                    result[i + j] += coef * other_coef
+            return Polynom(result)
+        elif isinstance(other, (int, float)):
+            return Polynom([coef * other for coef in self.coefficients])
+        else:
+            raise ValueError("Unsupported operand type(s) for *")
 
-print(poly1)
-print(poly2)
-print(poly3)
-print(poly4)
-print(poly5)
-print(poly1 == poly2)
-print(poly2 == poly3)
-print(poly3 + poly2)
-print(poly1 - poly2)
-print(poly1 + 10)
-print(-poly1)
-print(poly1 - 10)
-print(poly1(2))
-print(poly1.der(1))
+    def __rmul__(self, other):
+        return self.__mul__(other)
+
+    def __iter__(self):
+        return iter(enumerate(self.coefficients))
+
+    def __next__(self):
+        return next(iter(enumerate(self.coefficients)))
+
+    def __int__(self):
+        return int(self.coefficients[0])  # Приводим свободный член к целому типу
+
+    def __float__(self):
+        return float(self.coefficients[0])  # Приводим свободный член к вещественному типу
+
+    def __complex__(self):
+        return complex(self.coefficients[0])
