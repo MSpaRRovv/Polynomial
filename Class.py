@@ -2,17 +2,25 @@ class Polynom:
     def __init__(self, *coefficients):
         if len(coefficients) == 1:
             if isinstance(coefficients[0], dict):
-                self.coefficients = [0] * (max(coefficients[0].keys())+1)
-                for power, coef in coefficients[0].items():
-                    self.coefficients[power] = coef
+                if not coefficients[0]:  # Проверяем, если словарь пустой
+                    self.coefficients = []  # Пустой список
+                else:
+                    self.coefficients = [0] * (max(coefficients[0].keys()) + 1)
+                    for power, coef in coefficients[0].items():
+                        self.coefficients[power] = coef
             elif isinstance(coefficients[0], Polynom):
                 self.coefficients = coefficients[0].coefficients[:]
             elif isinstance(coefficients[0], int):
                 self.coefficients = [coefficients[0]]
-            else:
-                self.coefficients = coefficients[0]  #Значит список
+            elif isinstance(coefficients[0], list):
+                if not coefficients[0]:  # Проверяем, если список пустой
+                    self.coefficients = []  # Пустой список
+                else:
+                    self.coefficients = coefficients[0]  # Значит список
         else:
-            self.coefficients = list(coefficients)  #считаем что аргументы являются списком
+            self.coefficients = list(coefficients)
+
+    #считаем что аргументы являются списком
 
     def __repr__(self) -> str:
         return f"Polynom {self.coefficients[::-1]}"
@@ -40,11 +48,8 @@ class Polynom:
             return "0"
         return " + ".join(terms)
 
-    def __eq__(self, other) -> bool:
-        if isinstance(other, Polynom):
-            return self.coefficients == other.coefficients
-        else:
-            False
+    def __eq__(self, other):
+        return isinstance(other, Polynom) and self.coefficients == other.coefficients
 
     def __add__(self, other):
         if isinstance(other, Polynom):
