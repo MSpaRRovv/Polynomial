@@ -2,20 +2,22 @@ class Polynom:
     def __init__(self, *coefficients):
         if len(coefficients) == 1:
             if isinstance(coefficients[0], dict):
-                self.coefficients = [0] * (max(coefficients[0].keys()) + 1) #прибавля
+                self.coefficients = [0] * (max(coefficients[0].keys())+1)
                 for power, coef in coefficients[0].items():
                     self.coefficients[power] = coef
             elif isinstance(coefficients[0], Polynom):
                 self.coefficients = coefficients[0].coefficients[:]
+            elif isinstance(coefficients[0], int):
+                self.coefficients = [coefficients[0]]
             else:
-                self.coefficients = coefficients[0] #Значит список
+                self.coefficients = coefficients[0]  #Значит список
         else:
-            self.coefficients = list(coefficients)#считаем что аргументы являются списком
+            self.coefficients = list(coefficients)  #считаем что аргументы являются списком
 
     def __repr__(self) -> str:
         return f"Polynom {self.coefficients[::-1]}"
 
-    def __str__(self) ->str:
+    def __str__(self) -> str:
         terms = []
         for power, coef in reversed(list(enumerate(self.coefficients))):
             if coef != 0:
@@ -112,4 +114,3 @@ class Polynom:
 
     def __next__(self):
         return next(iter(enumerate(self.coefficients)))
-
