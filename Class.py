@@ -97,6 +97,8 @@ class Polynom:
         return Polynom(derived_coefficients)
 
     def degree(self):
+        if all(coef == 0 for coef in self.coefficients):
+            return "Нулевой полином Степень не определяется"
         return len(self.coefficients) - 1
 
     def __mul__(self, other):

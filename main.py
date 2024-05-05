@@ -39,5 +39,7 @@ print(p10)
 for power, coef in p1:
     print(power, coef)
 
-print(1 - p1)
+
+
+
 

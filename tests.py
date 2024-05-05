@@ -253,3 +253,94 @@ class TestPolynom(unittest.TestCase):
         p6 = Polynom({0: -3, 2: 1, 5: 4})
         expected5 = Polynom([0, 0, 2, 0, 0, 20])
         assert p6.der() == expected5
+
+    def test_degree(self):
+        p1 = Polynom([1, 2, 3])
+        assert p1.degree() == 2
+
+        p2 = Polynom([0])
+        assert p2.degree() == "Нулевой полином Степень не определяется"
+
+        p3 = Polynom()
+        assert p3.degree() == "Нулевой полином Степень не определяется"
+
+        p4 = Polynom({0: 0})
+        assert p4.degree() == "Нулевой полином Степень не определяется"
+
+        p5 = Polynom(1)
+        assert p5.degree() == 0
+
+    def test_mul(self):
+        p1 = Polynom(1, 2, 3)
+        p2 = Polynom(4, 5, 6)
+        expected = Polynom([4, 13, 28, 27, 18])
+        assert p1 * p2 == expected
+
+        p3 = Polynom([0, 0, 0])
+        p4 = Polynom([0, 0, 0])
+        expected1 = Polynom([0, 0, 0, 0, 0])
+        assert p3 * p4 == expected1
+
+        p5 = Polynom(0)
+        p6 = Polynom(0)
+        expected2 = Polynom(0)
+        assert p5 * p6 == expected2
+
+        p7 = Polynom({})
+        p8 = Polynom([0])
+        expected3 = Polynom([])
+        assert p7 * p8 == expected3
+
+    def test_round(self):
+        p1 = Polynom(1, 2, 3)
+        i = 3
+        expected = Polynom([3, 6, 9])
+        assert p1 * i == expected
+        assert i * p1 == expected
+
+        p2 = Polynom([0, 0, 0])
+        i2 = 3
+        expected1 = Polynom([0, 0, 0])
+        assert p2 * i2 == expected1
+        assert i2 * p2 == expected1
+
+        i3 = 0
+        expected2 = Polynom([0, 0, 0])
+        assert p1 * i3 == expected2
+        assert i3 * p1 == expected2
+
+        i4 = -1
+        expected3 = Polynom([-1, -2, -3])
+        assert p1 * i4 == expected3
+        assert i4 * p1 == expected3
+
+        assert p2 * i4 == expected2
+        assert i4 * p2 == expected2
+
+    def test_iter(self):
+        p = Polynom(1, 2, 3, 4, 5)
+        expected = [1, 2, 3, 4, 5, 6]
+        for power, coef in p:
+            assert coef == expected[power]
+
+        p1 = Polynom(0)
+        expected1 = [0]
+        for power, coef in p1:
+            assert coef == expected1[power]
+
+        p2 = Polynom([])
+        expected2 = []
+        for power, coef in p2:
+            assert coef == expected2[power]
+
+    def test_next(self):
+        p1 = Polynom([1, 2, 3])
+        it = iter(p1)
+        self.assertEqual(next(it), (0, 1))
+        self.assertEqual(next(it), (1, 2))
+        self.assertEqual(next(it), (2, 3))
+        p2 = Polynom([])
+        it = iter(p2)
+        with self.assertRaises(StopIteration):
+            next(it)
+
