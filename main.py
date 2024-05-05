@@ -24,17 +24,6 @@ print(p1.degree())
 print(p1 * p2)
 print(p1 * 10)
 print(p3.der())
-p6 = Polynom(1)
-print(p6)
-p7 = Polynom([])
-print(p7)
-p8 = Polynom([0, 0, 0])
-print(p8)
-
-p10 = Polynom({0: 0})
-p9 = Polynom({})
-print(p9)
-print(p10)
 
 for power, coef in p1:
     print(power, coef)

@@ -344,3 +344,31 @@ class TestPolynom(unittest.TestCase):
         with self.assertRaises(StopIteration):
             next(it)
 
+    def test_str(self):
+        p1 = Polynom(1, 2, 3)
+        assert str(p1) == "3x^2 + 2x + 1"
+
+        p2 = Polynom(0, 0, 0, 5)
+        assert str(p2) == "5x^3"
+
+        p3 = Polynom(0, 0, 0, 0, 1)
+        assert str(p3) == "x^4"
+
+        p4 = Polynom(0, 0, 0, 0, 0)
+        assert str(p4) == "0"
+
+        p5 = Polynom(0, 1, 0, 2, 0)
+        assert str(p5) == "2x^3 + x"
+
+        p6 = Polynom([0, 0, 0, 0, 0, 0, 0])
+        assert str(p6) == "0"
+
+        p9 = Polynom({})
+        assert str(p9) == "0"
+
+        p10 = Polynom(1)
+        assert str(p10) == "1"
+
+        p11 = Polynom(-1)
+        assert str(p11) == "-1"
+

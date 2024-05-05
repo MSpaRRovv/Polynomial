@@ -20,7 +20,7 @@ class Polynom:
         else:
             self.coefficients = list(coefficients)
 
-    #считаем что аргументы являются списком
+    # считаем что аргументы являются списком
 
     def __repr__(self) -> str:
         return f"Polynom {self.coefficients[::-1]}"
